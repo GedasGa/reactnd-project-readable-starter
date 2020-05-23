@@ -1,5 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
+import { useParams,} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 
 import Post from '../../components/Post';
@@ -24,10 +25,15 @@ const featuredPosts = [
 ];
 
 function Root() {
+  const categories = useSelector(state => state.counter);
+  const posts = useSelector(state => state.posts);
+
+  let { category } = useParams();
+
   return (
     <main>
       <Grid container spacing={4}>
-        {featuredPosts.map((post) => (
+        {posts.map((post) => (
           <Post key={post.title} post={post} />
         ))}
       </Grid>

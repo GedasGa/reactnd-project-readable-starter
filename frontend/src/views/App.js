@@ -1,5 +1,6 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom'
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route, withRouter, Switch } from "react-router-dom";
 import Container from '@material-ui/core/Container';
 
 import Header from '../components/Header';
@@ -8,6 +9,7 @@ import Footer from '../components/Footer';
 import Root from './Root/Root';
 import PostDetail from './PostDetail/PostDetail';
 import Error from './Error/Error';
+import { getCategories, getPosts } from '../actions/index';
 
 const sections = [
   { title: 'Technology', url: '#' },
@@ -23,18 +25,28 @@ const sections = [
 ];
 
 function App() {
+  const dispatch = useDispatch();
+
+  const categories = useSelector(state => state.categories);
+  const posts = useSelector(state => state.posts);
+
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getPosts());
+  }, []);
+
   return (
     <React.Fragment>
       <Container maxWidth="lg">
-          <Header title="Readable" sections={sections} />
+          <Header title="Readable" categories={categories} />
           <Switch>
             <Route exact path='/'>
               <Root />
             </Route>
-            <Route exact path='categoryies/:category' render={(state) => (
+            <Route exact path='/:category' render={(state) => (
               <Root filter={state.match.params.category} />
             )} />
-            <Route exact path='categories/:category/posts/:postId' render={(state) => (
+            <Route exact path='/:category/:postId' render={(state) => (
               <PostDetail postId={state.match.params.postId} />
             )} />
             <Route component={Error} />
@@ -45,4 +57,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRouter(App);

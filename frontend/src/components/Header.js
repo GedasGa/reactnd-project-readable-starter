@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   toolbarSecondary: {
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     overflowX: 'auto',
   },
   toolbarLink: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Header(props) {
   const classes = useStyles();
-  const { sections, title } = props;
+  const { categories, title } = props;
 
   return (
     <React.Fragment>
@@ -38,23 +39,22 @@ function Header(props) {
           noWrap
           className={classes.toolbarTitle}
         >
-          {title}
+          <RouterLink to='/'>{title}</RouterLink>
         </Typography>
         <IconButton>
           <SearchIcon />
         </IconButton>
       </Toolbar>
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
-        {sections.map((section) => (
+        {categories.map((category) => (
           <Link
             color="inherit"
             noWrap
-            key={section.title}
+            key={category.name}
             variant="body2"
-            href={section.url}
             className={classes.toolbarLink}
           >
-            {section.title}
+            <RouterLink to={`/${category.path}`}>{category.name}</RouterLink>
           </Link>
         ))}
       </Toolbar>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PostDetail() {.3.toExponential.
+function PostDetail() {
   return (
     <main>
     </main>
