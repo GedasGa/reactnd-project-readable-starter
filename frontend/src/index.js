@@ -1,17 +1,18 @@
 import React from 'react';
-import { Provider } from 'react-redux'
 import ReactDOM from 'react-dom';
-import thunk from "redux-thunk";
 import { BrowserRouter } from 'react-router-dom'
+import { createStore, applyMiddleware, compose } from 'redux';
+import { Provider  } from 'react-redux'
+import thunk from 'redux-thunk';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 
+import theme from './theme';
 import './index.css';
-import App from './App';
+import combinedReducers from './store/index';
 import * as serviceWorker from './serviceWorker';
 import App from './views/App'
-import combinedReducers from "./store/index";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 let store = createStore(combinedReducers, composeEnhancers(applyMiddleware(thunk)));
