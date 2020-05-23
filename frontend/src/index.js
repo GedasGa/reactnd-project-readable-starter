@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux'
 import ReactDOM from 'react-dom';
+import thunk from "redux-thunk";
 import { BrowserRouter } from 'react-router-dom'
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,8 +11,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import App from './views/App'
-import store from './store/'
+import combinedReducers from "./store/index";
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+let store = createStore(combinedReducers, composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Provider store={store}>
