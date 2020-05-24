@@ -1,40 +1,29 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { useParams,} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 
 import Post from '../../components/Post';
 
-const featuredPosts = [
-  {
-    title: 'Featured post',
-    date: 'Nov 12',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-  },
-  {
-    title: 'Post title',
-    date: 'Nov 11',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-  },
-];
+import { upvotePost, downvotePost } from '../../actions/index';
 
-function Root() {
+function Root(props) {
+  const { filter } = props;
+
+  const dispatch = useDispatch();
+
   const categories = useSelector(state => state.counter);
   const posts = useSelector(state => state.posts);
+  console.log(posts);
 
-  let { category } = useParams();
+  const handleUpvote = (postId) => dispatch(upvotePost(postId));
+  const handleDownvote = (postId) => dispatch(downvotePost(postId));
 
   return (
     <main>
       <Grid container spacing={4}>
-        {posts.map((post) => (
-          <Post key={post.title} post={post} />
+        {posts.filter(post => !filter || post.category === filter)
+        .map((post) => (
+          <Post key={post.id} post={post} handleUpvote={handleUpvote} handleDownvote={handleDownvote} />
         ))}
       </Grid>
     </main>
