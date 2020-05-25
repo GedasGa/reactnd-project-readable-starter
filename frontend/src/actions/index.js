@@ -1,6 +1,6 @@
 import {
-  fetchCategoriesAPI,
-  fetchPostsAPI,
+  getCategoriesAPI,
+  getPostsAPI,
   upvotePostAPI,
   downvotePostAPI,
 } from '../utils/api.js';
@@ -17,7 +17,7 @@ const getCategoriesFulfiled  = (categories) => ({
 })
 
 export const getCategories = () => (dispatch) =>
-  fetchCategoriesAPI()
+  getCategoriesAPI()
   .then(response => dispatch(getCategoriesFulfiled(response.categories)))
   .catch(err => console.error("Could not fetch categories", err));
 
@@ -27,7 +27,7 @@ const getPostsFulfiled = (posts) => ({
 });
 
 export const getPosts = () => (dispatch) =>
-  fetchPostsAPI()
+  getPostsAPI()
   .then(response => dispatch(getPostsFulfiled(response)))
   .catch(err => console.error("Could not fetch posts", err));
 
