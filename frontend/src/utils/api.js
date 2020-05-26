@@ -95,12 +95,12 @@ export const deletePostAPI = (postId) => {
 
 export const getPostCommentsAPI = (postId) => {
   const options = { method: 'get', headers: getAuthHeaders() };
-  return fetch(`${URL}/posts/${postId}`, options)
+  return fetch(`${URL}/posts/${postId}/comments`, options)
     .then(response => response.json())
     .then(data => data);
 }
 
-export const addPostsAPI = (id, title, body, author, parentId) => {
+export const addCommentAPI = (id, title, body, author, parentId) => {
   const options = {
     method: 'post',
     headers: getAuthHeaders(),
@@ -113,7 +113,7 @@ export const addPostsAPI = (id, title, body, author, parentId) => {
       parentId: parentId
     })
   };
-  return fetch(`${URL}/posts`, options)
+  return fetch(`${URL}/comments`, options)
     .then(response => response.json())
     .catch(err => console.error(err));
 }

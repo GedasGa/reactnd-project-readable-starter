@@ -11,6 +11,8 @@ import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles({
   card: {
@@ -34,6 +36,16 @@ function Post(props) {
           <CardHeader
             title={post.title}
             subheader={`by ${post.author} , ${new Date(post.timestamp).toDateString()}`}
+            action={
+              <>
+                <IconButton aria-label="edit">
+                  <EditIcon />
+                </IconButton>
+                <IconButton aria-label="delete">
+                  <DeleteIcon />
+                </IconButton>
+              </>
+            }
           />
           <div className={classes.cardDetails}>
             <CardContent>
@@ -64,11 +76,9 @@ function Post(props) {
             <IconButton
               className={classes.left}
             >
+              {post.commentCount}
               <CommentIcon />
             </IconButton>
-            <Typography variant="subtitle1" color="textSecondary">
-              {post.commentCount}
-            </Typography>
           </CardActions>
         </Card>
     </Grid>

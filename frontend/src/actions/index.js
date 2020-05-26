@@ -5,6 +5,8 @@ import {
   downvotePostAPI,
   getPostAPI,
   getPostCommentsAPI,
+  upvoteCommentAPI,
+  downvoteCommentAPI,
 } from '../utils/api.js';
 import {
   CATEGORIES_FETCHED,
@@ -25,7 +27,7 @@ const getCategoriesFulfiled  = (categories) => ({
 export const getCategories = () => (dispatch) =>
   getCategoriesAPI()
   .then(response => dispatch(getCategoriesFulfiled(response.categories)))
-  .catch(err => console.error("Could not fetch categories", err));
+  .catch(err => console.error("Could not fetch categories:", err));
 
 const getPostsFulfiled = (posts) => ({
   type: POSTS_FETCHED,
@@ -35,7 +37,7 @@ const getPostsFulfiled = (posts) => ({
 export const getPosts = () => (dispatch) =>
   getPostsAPI()
   .then(response => dispatch(getPostsFulfiled(response)))
-  .catch(err => console.error("Could not fetch post", err));
+  .catch(err => console.error("Could not fetch post:", err));
 
 export const upvotePostFulfiled  = (postId) => ({
     type: POST_UPVOTED,
@@ -45,7 +47,7 @@ export const upvotePostFulfiled  = (postId) => ({
 export const upvotePost = (postId) => (dispatch) =>
   upvotePostAPI(postId)
   .then(response => dispatch(upvotePostFulfiled(response.id)))
-  .catch(err => console.error("Could not upvote post", err));
+  .catch(err => console.error("Could not upvote post:", err));
 
 export const downvotePostFulfiled = (postId) => ({
     type: POST_DOWNVOTED,
@@ -55,18 +57,18 @@ export const downvotePostFulfiled = (postId) => ({
 export const downvotePost = (postId) => (dispatch) =>
   downvotePostAPI(postId)
   .then(response => dispatch(downvotePostFulfiled(response.id)))
-  .catch(err => console.error("Could not downvote post", err));
+  .catch(err => console.error("Could not downvote post:", err));
 
 
 export const getPostFulfiled = (post) => ({
-    type: POSTS_FETCHED,
+    type: POST_FETCHED,
     payload: post
 });
 
 export const getPost = (postId) => (dispatch) =>
   getPostAPI(postId)
   .then(response => dispatch(getPostFulfiled(response)))
-  .catch(err => console.error("Could not get post", err));
+  .catch(err => console.error("Could not get post:", err));
 
 
 export const getPostCommentsFulfiled = (comments) => ({
@@ -76,8 +78,8 @@ export const getPostCommentsFulfiled = (comments) => ({
 
 export const getPostComments = (postId) => (dispatch) =>
   getPostCommentsAPI(postId)
-  .then(response => dispatch(getCommentFulfiled(response)))
-  .catch(err => console.error("Could not get post comments", err));
+  .then(response => dispatch(getPostCommentsFulfiled(response)))
+  .catch(err => console.error("Could not get post comments:", err));
 
 export const upvoteCommentFulfiled  = (postId) => ({
     type: COMMENT_UPVOTED,
@@ -87,7 +89,7 @@ export const upvoteCommentFulfiled  = (postId) => ({
 export const upvoteComment = (commentId) => (dispatch) =>
   upvoteCommentAPI(commentId)
   .then(response => dispatch(upvotePostFulfiled(response.id)))
-  .catch(err => console.error("Could not upvote post", err));
+  .catch(err => console.error("Could not upvote comment:", err));
 
 export const downvoteCommentFulfiled = (postId) => ({
     type: COMMENT_DOWNVOTED,
@@ -97,4 +99,4 @@ export const downvoteCommentFulfiled = (postId) => ({
 export const downvoteComment = (commentId) => (dispatch) =>
   downvoteCommentAPI(commentId)
   .then(response => dispatch(downvotePostFulfiled(response.id)))
-  .catch(err => console.error("Could not comment post", err));
+  .catch(err => console.error("Could not downvote comment:", err));
