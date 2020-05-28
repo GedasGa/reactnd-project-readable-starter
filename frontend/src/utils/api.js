@@ -31,7 +31,7 @@ export const addPostsAPI = (id, title, body, author, category) => {
       title: title,
       body: body,
       author: author,
-      category
+      category: category,
     })
   };
   return fetch(`${URL}/posts`, options)
@@ -100,7 +100,7 @@ export const getPostCommentsAPI = (postId) => {
     .then(data => data);
 }
 
-export const addCommentAPI = (id, title, body, author, parentId) => {
+export const addCommentAPI = (id, body, author, parentId) => {
   const options = {
     method: 'post',
     headers: getAuthHeaders(),
@@ -110,7 +110,7 @@ export const addCommentAPI = (id, title, body, author, parentId) => {
       title: title,
       body: body,
       author: author,
-      parentId: parentId
+      parentId: parentId,
     })
   };
   return fetch(`${URL}/comments`, options)

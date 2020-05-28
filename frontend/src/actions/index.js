@@ -88,7 +88,7 @@ export const upvoteCommentFulfiled  = (postId) => ({
 
 export const upvoteComment = (commentId) => (dispatch) =>
   upvoteCommentAPI(commentId)
-  .then(response => dispatch(upvotePostFulfiled(response.id)))
+  .then(response => dispatch(upvoteCommentFulfiled(response.id)))
   .catch(err => console.error("Could not upvote comment:", err));
 
 export const downvoteCommentFulfiled = (postId) => ({
@@ -98,5 +98,5 @@ export const downvoteCommentFulfiled = (postId) => ({
 
 export const downvoteComment = (commentId) => (dispatch) =>
   downvoteCommentAPI(commentId)
-  .then(response => dispatch(downvotePostFulfiled(response.id)))
+  .then(response => dispatch(downvoteCommentFulfiled(response.id)))
   .catch(err => console.error("Could not downvote comment:", err));
