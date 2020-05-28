@@ -14,10 +14,6 @@ function FormDialog(props) {
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          To subscribe to this website, please enter your email address here. We will send updates
-          occasionally.
-        </DialogContentText>
         {children}
       </DialogContent>
       <DialogActions>
@@ -25,7 +21,7 @@ function FormDialog(props) {
           Cancel
         </Button>
         <Button onClick={handleSubmit} color="primary">
-          {isEdit ? 'Create' : 'Edit'}
+          {isEdit ? 'Edit' : 'Create'}
         </Button>
       </DialogActions>
     </Dialog>

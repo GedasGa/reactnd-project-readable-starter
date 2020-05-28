@@ -21,7 +21,7 @@ export const getPostsAPI = () => {
     .catch(err => console.error(err));
 }
 
-export const addPostsAPI = (id, title, body, author, category) => {
+export const addPostAPI = (id, title, body, author, category) => {
   const options = {
     method: 'post',
     headers: getAuthHeaders(),
@@ -107,7 +107,6 @@ export const addCommentAPI = (id, body, author, parentId) => {
     body: JSON.stringify({
       id: id,
       timestamp: Date.now(),
-      title: title,
       body: body,
       author: author,
       parentId: parentId,

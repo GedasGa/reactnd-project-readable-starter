@@ -7,16 +7,28 @@ import {
   getPostCommentsAPI,
   upvoteCommentAPI,
   downvoteCommentAPI,
+  addPostAPI,
+  updatePostAPI,
+  deletePostAPI,
+  addCommentAPI,
+  updateCommentAPI,
+  deleteCommentAPI,
 } from '../utils/api.js';
 import {
   CATEGORIES_FETCHED,
   POSTS_FETCHED,
+  POST_ADDED,
+  POST_UPDATED,
+  POST_DELETED,
   POST_UPVOTED,
   POST_DOWNVOTED,
   POST_FETCHED,
   POST_COMMENTS_FETCHED,
+  COMMENT_ADDED,
+  COMMENT_UPDATED,
+  COMMENT_DELETED,
   COMMENT_UPVOTED,
-  COMMENT_DOWNVOTED
+  COMMENT_DOWNVOTED,
 } from './types';
 
 const getCategoriesFulfiled  = (categories) => ({
@@ -70,7 +82,6 @@ export const getPost = (postId) => (dispatch) =>
   .then(response => dispatch(getPostFulfiled(response)))
   .catch(err => console.error("Could not get post:", err));
 
-
 export const getPostCommentsFulfiled = (comments) => ({
     type: POST_COMMENTS_FETCHED,
     payload: comments
@@ -100,3 +111,63 @@ export const downvoteComment = (commentId) => (dispatch) =>
   downvoteCommentAPI(commentId)
   .then(response => dispatch(downvoteCommentFulfiled(response.id)))
   .catch(err => console.error("Could not downvote comment:", err));
+
+export const addPostFulfiled = (post) => ({
+    type: POST_ADDED,
+    payload: post
+});
+
+export const addPost = (id, title, body, author, category) => (dispatch) =>
+  addPostAPI(id, title, body, author, category)
+  .then(response => dispatch(addPostFulfiled(response)))
+  .catch(err => console.error("Could not add post:", err));
+
+export const updatePostFulfiled = (post) => ({
+    type: POST_UPDATED,
+    payload: post
+});
+
+export const updatePost = (postId, title, body) => (dispatch) =>
+  updatePostAPI(postId, title, body)
+  .then(response => dispatch(updatePostFulfiled(response)))
+  .catch(err => console.error("Could not update post:", err));
+
+export const deletePostFulfiled = (post) => ({
+    type: POST_DELETED,
+    payload: post
+});
+
+export const deletePost = (postId) => (dispatch) =>
+  deletePostAPI(postId)
+  .then(response => dispatch(deletePostFulfiled(response)))
+  .catch(err => console.error("Could not delete post:", err));
+
+export const addCommentFulfiled = (comment) => ({
+    type: COMMENT_ADDED,
+    payload: comment
+});
+
+export const addComment = (id, body, author, parentId) => (dispatch) =>
+  addCommentAPI(id, body, author, parentId)
+  .then(response => dispatch(addCommentFulfiled(response)))
+  .catch(err => console.error("Could not add comment:", err));
+
+export const updateCommentFulfiled = (comment) => ({
+    type: COMMENT_UPDATED,
+    payload: comment
+});
+
+export const updateComment = (commentId, title, body) => (dispatch) =>
+  updateCommentAPI(commentId, title, body)
+  .then(response => dispatch(updateCommentFulfiled(response)))
+  .catch(err => console.error("Could not update comment:", err));
+
+export const deleteCommentFulfiled = (comment) => ({
+    type: COMMENT_DELETED,
+    payload: comment
+});
+
+export const deleteComment = (commentId) => (dispatch) =>
+  deleteCommentAPI(commentId)
+  .then(response => dispatch(deleteCommentFulfiled(response)))
+  .catch(err => console.error("Could not delete comment:", err));

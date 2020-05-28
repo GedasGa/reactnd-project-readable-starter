@@ -9,8 +9,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Voting from './Voting';
 import EditDelete from './EditDelete';
 
@@ -28,7 +26,7 @@ const useStyles = makeStyles({
 
 function Post(props) {
   const classes = useStyles();
-  const { post, handleUpvote, handleDownvote } = props;
+  const { post, handleUpvote, handleDownvote, handleUpdatePost, handleDeletePost } = props;
 
   return (
     <Grid item xs={12} md={6}>
@@ -37,7 +35,10 @@ function Post(props) {
             title={post.title}
             subheader={`by ${post.author} , ${new Date(post.timestamp).toDateString()}`}
             action={
-              <EditDelete/>
+              <EditDelete
+                handleEdit={handleUpdatePost}
+                handleDelete={handleDeletePost}
+              />
             }
           />
           <div className={classes.cardDetails}>

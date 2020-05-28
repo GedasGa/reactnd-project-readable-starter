@@ -1,6 +1,8 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
+import FormDialog from './FormDialog';
+
 function AddEditCommentDialog(props) {
   const {isEdit, comment, handleClose, handleSubmit, open} = props;
 
@@ -30,6 +32,7 @@ function AddEditCommentDialog(props) {
             type="text"
             value={author}
             onChange={handleAuthorChange}
+            fullWidth
           />
           <TextField
             id="body"

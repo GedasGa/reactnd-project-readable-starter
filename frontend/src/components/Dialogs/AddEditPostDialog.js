@@ -1,14 +1,17 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import FormDialog from './FormDialog';
 
 function AddEditPostDialog(props) {
   const {isEdit, categories, post, handleClose, handleSubmit, open} = props;
 
-  const [author, setAuthor] = React.useState(isEdit ? post.author : '');
-  const [title, setTitle] = React.useState(isEdit ? post.catetitlegory : '');
-  const [body, setBody] = React.useState(isEdit ? post.body : '');
-  const [category, setCategory] = React.useState(isEdit ? post.category : '');
+  const [author, setAuthor] = React.useState(isEdit ? post && post.author : '');
+  const [title, setTitle] = React.useState(isEdit ? post && post.title : '');
+  const [body, setBody] = React.useState(isEdit ? post && post.body : '');
+  const [category, setCategory] = React.useState(isEdit ? post && post.category : '');
 
   const handleAuthorChange = (event) => {
     setAuthor(event.target.value);
@@ -26,12 +29,20 @@ function AddEditPostDialog(props) {
     setCategory(event.target.value);
   };
 
+  const handleFormSubmit = () => {
+    if (isEdit) {
+      handleSubmit(post.id, title, body);
+    } else {
+      handleSubmit(uuidv4(), title, body, author, category);
+    }
+  }
+  
   return (
     <FormDialog 
       open={open}
       isEdit={isEdit}
       handleClose={handleClose}
-      handleSubmit={handleSubmit}
+      handleSubmit={handleFormSubmit}
       title={isEdit ? 'Edit post' : 'Add a new post'}
       children={
         <>
@@ -42,6 +53,7 @@ function AddEditPostDialog(props) {
             type="email"
             value={title}
             onChange={handleTitleChange}
+            fullWidth
           />
           <TextField
             id="author"
@@ -49,6 +61,7 @@ function AddEditPostDialog(props) {
             type="text"
             value={author}
             onChange={handleAuthorChange}
+            fullWidth
           />
           <TextField
             id="body"
@@ -61,13 +74,13 @@ function AddEditPostDialog(props) {
           <TextField
             id="standard-select-currency"
             select
-            label="Select"
+            label="Category"
             value={category}
             onChange={handleCategoryChange}
-            helperText="Please select post category"
+            helperText="Please select a post category"
             fullWidth
           >
-            {categories.map((category) => (
+            {categories && categories.map((category) => (
               <MenuItem key={category.name} value={category.name}>
                 {category.name}
               </MenuItem>
