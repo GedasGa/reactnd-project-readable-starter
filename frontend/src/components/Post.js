@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -9,10 +9,10 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Voting from './Voting';
+import EditDelete from './EditDelete';
 
 const useStyles = makeStyles({
   card: {
@@ -37,14 +37,7 @@ function Post(props) {
             title={post.title}
             subheader={`by ${post.author} , ${new Date(post.timestamp).toDateString()}`}
             action={
-              <>
-                <IconButton aria-label="edit">
-                  <EditIcon />
-                </IconButton>
-                <IconButton aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
-              </>
+              <EditDelete/>
             }
           />
           <div className={classes.cardDetails}>
@@ -58,23 +51,15 @@ function Post(props) {
             </CardContent>
           </div>
           <CardActions disableSpacing>
-            <IconButton 
-              aria-label="vote up"
-              onClick={() => handleUpvote(post.id)}
-            >
-              <ThumbUpIcon />
-            </IconButton>
-            <Typography variant="subtitle1" color="textSecondary">
-              {post.voteScore}
-            </Typography>
-            <IconButton 
-              aria-label="vote down"
-              onClick={() => handleDownvote(post.id)}
-            >
-              <ThumbDownIcon />
-            </IconButton>
+            <Voting 
+              id={post.id}
+              voteScore={post.voteScore}
+              handleUpvote={handleUpvote}
+              handleDownvote={handleDownvote}
+            />
             <IconButton
               className={classes.left}
+              onClick={() => props.history.push(`${post.category}/${post.id}`)}
             >
               {post.commentCount}
               <CommentIcon />
@@ -85,4 +70,4 @@ function Post(props) {
   );
 }
 
-export default Post;
+export default withRouter(Post);

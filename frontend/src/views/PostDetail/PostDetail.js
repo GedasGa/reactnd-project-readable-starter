@@ -5,19 +5,19 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
+import List from '@material-ui/core/List';
 
-import { getPost, getPostComments } from '../../actions/index';
+import Comment from '../../components/Comment';
+import Voting from '../../components/Voting';
+
+import { getPost, getPostComments, upvoteComment, downvoteComment, upvotePost, downvotePost } from '../../actions/index';
 
 const useStyles = makeStyles((theme) => ({
   mainFeaturedPost: {
     position: 'relative',
-    backgroundColor: theme.palette.grey[800],
+    backgroundColor: theme.palette.grey[200],
     color: theme.palette.common.white,
     marginBottom: theme.spacing(4),
-    backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
   },
   overlay: {
     position: 'absolute',
@@ -44,32 +44,58 @@ function PostDetails(props) {
   const dispatch = useDispatch();
 
   const post = useSelector(state => state.posts.filter(post => post.id === postId));
+  const comments = useSelector(state => state.comments);
+
+  const handlePostUpvote = (postId) => dispatch(upvotePost(postId));
+  const handlePostDownvote = (postId) => dispatch(downvotePost(postId));
+
+  const handleCommentUpvote = (commentId) => dispatch(upvoteComment(commentId));
+  const handleCommentDownvote = (commentId) => dispatch(downvoteComment(commentId));
 
   useEffect(() => {
     dispatch(getPost(postId));
     dispatch(getPostComments(postId));
   }, [postId]);
 
-  return post.length && (
-    <Paper className={classes.mainFeaturedPost}>
-      <div className={classes.overlay} />
-      <Grid container>
-        <Grid item md={6}>
-          <div className={classes.mainFeaturedPostContent}>
-            <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-              {post[0].title}
-            </Typography>
-            <Typography variant="h5" color="inherit" paragraph>
-              by {post[0].author} , {new Date(post.timestamp).toDateString()}
-            </Typography>
-            <Link variant="subtitle1" href="#">
-              {post[0].body}
-            </Link>
-          </div>
-        </Grid>
-      </Grid>
-    </Paper>
+  return (
+    <>
+      {post.length && (
+          <Paper className={classes.mainFeaturedPost}>
+            <div className={classes.overlay} />
+            <Grid container>
+              <Grid item md={6}>
+                <div className={classes.mainFeaturedPostContent}>
+                  <Typography component="h1" variant="h3" color="inherit" gutterBottom>
+                    {post[0].title}
+                  </Typography>
+                  <Typography variant="h5" color="inherit" paragraph>
+                    by {post[0].author} , {new Date(post.timestamp).toDateString()}
+                  </Typography>
+                  <Typography variant="subtitle1" color="inherit" paragraph>
+                    {post[0].body}
+                  </Typography>
+                  <Voting color="inherit"
+                    id={post[0].id}
+                    voteScore={post[0].voteScore}
+                    handleUpvote={handlePostUpvote}
+                    handleDownvote={handlePostDownvote}
+                  />
+                </div>
+              </Grid>
+            </Grid>
+          </Paper>
+      )}
+      
+      <List>
+        {comments.length ? comments.map((comment) => (
+            <Comment key={comment.id} comment={comment} handleUpvote={handleCommentUpvote} handleDownvote={handleCommentDownvote} />
+        )) : 'No comments'}
+      </List>
+    </>
   );
+  
+  
+
 }
 
 export default PostDetails;

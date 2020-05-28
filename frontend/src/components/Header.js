@@ -41,9 +41,6 @@ function Header(props) {
         >
           <RouterLink to='/'>{title}</RouterLink>
         </Typography>
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
       </Toolbar>
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
         {categories.map((category) => (
