@@ -13,16 +13,17 @@ const posts = (state = [], {type, payload}) => {
       ];
     case POST_UPDATED:
       return state.map(post => 
-        post.id === payload 
+        post.id === payload.id 
           ? {
             ...post,
-            title: post.title,
-            body: post.body
+            title: payload.title,
+            body: payload.body,
+            timestamp: payload.timestamp,
           }
           : post
       );
     case POST_DELETED:
-      return state.filter(post => post.id !== payload);
+      return state.filter(post => post.id !== payload.id);
     case POST_UPVOTED:
       return state.map(post =>
         post.id === payload

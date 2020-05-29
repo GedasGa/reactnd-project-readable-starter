@@ -1,10 +1,11 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import TextField from '@material-ui/core/TextField';
 
 import FormDialog from './FormDialog';
 
 function AddEditCommentDialog(props) {
-  const {isEdit, comment, handleClose, handleSubmit, open} = props;
+  const {isEdit, postId, comment, handleClose, handleSubmit, open} = props;
 
   const [author, setAuthor] = React.useState(isEdit ? comment.author : '');
   const [body, setBody] = React.useState(isEdit ? comment.body : '');
@@ -17,12 +18,21 @@ function AddEditCommentDialog(props) {
     setBody(event.target.value);
   };
 
+  const handleFormSubmit = () => {
+    if (isEdit) {
+      handleSubmit(comment.id, body);
+    } else {
+      handleSubmit(uuidv4(), author, body, postId);
+    }
+    handleClose();
+  }
+
   return (
     <FormDialog 
       open={open}
       isEdit={isEdit}
       handleClose={handleClose}
-      handleSubmit={handleSubmit}
+      handleSubmit={handleFormSubmit}
       title={isEdit ? 'Edit comment' : 'Add a new comment'}
       children={
         <>
@@ -30,6 +40,7 @@ function AddEditCommentDialog(props) {
             id="author"
             label="Author"
             type="text"
+            disabled={isEdit}
             value={author}
             onChange={handleAuthorChange}
             fullWidth

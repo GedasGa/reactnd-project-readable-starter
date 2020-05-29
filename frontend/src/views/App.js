@@ -15,12 +15,11 @@ function App() {
   const dispatch = useDispatch();
 
   const categories = useSelector(state => state.categories);
-  const posts = useSelector(state => state.posts);
 
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getPosts());
-  }, []);
+  });
 
   return (
     <React.Fragment>
@@ -39,7 +38,7 @@ function App() {
             <Route component={Error} />
           </Switch>
       </Container>
-      <Footer title="Footer" description="Something here to give the footer a purpose!" />
+      <Footer title="Readable" description="A content and comment web app!" />
     </React.Fragment>
   );
 }

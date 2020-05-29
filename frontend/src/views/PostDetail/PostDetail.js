@@ -4,13 +4,30 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
+import IconButton from '@material-ui/core/IconButton';
+import CommentIcon from '@material-ui/icons/Comment';
 
 import Comment from '../../components/Comment';
 import Voting from '../../components/Voting';
+import EditDelete from '../../components/EditDelete';
+import AddEditCommentDialog from '../../components/Dialogs/AddEditCommentDialog';
+import AddEditPostDialog from '../../components/Dialogs/AddEditPostDialog';
 
-import { getPost, getPostComments, upvoteComment, downvoteComment, upvotePost, downvotePost } from '../../actions/index';
+import { 
+  getPost, 
+  getPostComments, 
+  upvoteComment, 
+  downvoteComment, 
+  upvotePost,
+  downvotePost,
+  updatePost, 
+  deletePost,
+  addComment,
+  updateComment,
+  deleteComment,
+} from '../../actions/index';
 
 const useStyles = makeStyles((theme) => ({
   mainFeaturedPost: {
@@ -39,48 +56,76 @@ const useStyles = makeStyles((theme) => ({
 
 function PostDetails(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const { postId } = props;
 
-  const dispatch = useDispatch();
+  const [open, setOpen] = React.useState(false);
+  const [updatePostOpen, setUpdatePostOpen] = React.useState(false);
 
   const post = useSelector(state => state.posts.filter(post => post.id === postId));
   const comments = useSelector(state => state.comments);
 
+  const handleUpdatePost = (postId, title, body) => dispatch(updatePost(postId, title, body));
+  const handleDeletePost = (postId) => dispatch(deletePost(postId));
   const handlePostUpvote = (postId) => dispatch(upvotePost(postId));
   const handlePostDownvote = (postId) => dispatch(downvotePost(postId));
 
+  const handleAddComment = (commentId, author, body, postId) => dispatch(addComment(commentId, author, body, postId));
+  const handleUpdateComment = (commentId, body) => dispatch(updateComment(commentId, body));
+  const handleDeleteComment = (commentId) => dispatch(deleteComment(commentId));
   const handleCommentUpvote = (commentId) => dispatch(upvoteComment(commentId));
   const handleCommentDownvote = (commentId) => dispatch(downvoteComment(commentId));
 
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleClickOpenUpdatePost = () => setUpdatePostOpen(true);
+  const handleCloseUpdatePost = () => setUpdatePostOpen(false);
+
   useEffect(() => {
-    dispatch(getPost(postId));
-    dispatch(getPostComments(postId));
-  }, [postId]);
+    if(postId) {
+      dispatch(getPost(postId));
+      dispatch(getPostComments(postId));
+    }
+  }, [postId, dispatch]);
 
   return (
     <>
       {post.length && (
           <Paper className={classes.mainFeaturedPost}>
             <div className={classes.overlay} />
-            <Grid container>
+            <Grid container justify='space-between'>
               <Grid item md={6}>
                 <div className={classes.mainFeaturedPostContent}>
                   <Typography component="h1" variant="h3" color="inherit" gutterBottom>
                     {post[0].title}
                   </Typography>
                   <Typography variant="h5" color="inherit" paragraph>
-                    by {post[0].author} , {new Date(post.timestamp).toDateString()}
+                    by {post[0].author}, {new Date(post[0].timestamp).toDateString()}
                   </Typography>
                   <Typography variant="subtitle1" color="inherit" paragraph>
                     {post[0].body}
                   </Typography>
-                  <Voting color="inherit"
-                    id={post[0].id}
-                    voteScore={post[0].voteScore}
-                    handleUpvote={handlePostUpvote}
-                    handleDownvote={handlePostDownvote}
-                  />
                 </div>
+              </Grid>
+              <Grid item md={6} style={{display: 'flex'}}>
+                <Voting 
+                      id={postId}
+                      voteScore={post[0].voteScore}
+                      handleUpvote={handlePostUpvote}
+                      handleDownvote={handlePostDownvote}
+                    />
+                <EditDelete
+                    id={postId}
+                    handleEdit={handleClickOpenUpdatePost}
+                    handleDelete={handleDeletePost}
+                  />
+                  <div style={{display: 'flex', alignItems: 'center'}}>
+                    <IconButton>
+                      {post[0].commentCount}
+                      <CommentIcon />
+                    </IconButton>
+                  </div>
               </Grid>
             </Grid>
           </Paper>
@@ -88,9 +133,43 @@ function PostDetails(props) {
       
       <List>
         {comments.length ? comments.map((comment) => (
-            <Comment key={comment.id} comment={comment} handleUpvote={handleCommentUpvote} handleDownvote={handleCommentDownvote} />
+            <Comment 
+              key={comment.id} 
+              comment={comment} 
+              postId={postId}
+              handleUpvote={handleCommentUpvote} 
+              handleDownvote={handleCommentDownvote}
+              handleUpdateComment={handleUpdateComment}
+              handleDeleteComment={handleDeleteComment}
+            />
         )) : 'No comments'}
       </List>
+
+      <Grid item md={12}>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          Add a new comment
+        </Button>
+      </Grid>
+
+      {open && (
+        <AddEditCommentDialog 
+          isEdit={false}
+          postId={postId}
+          handleClose={handleClose}
+          handleSubmit={handleAddComment}
+          open={open}
+        />
+      )}
+
+      {updatePostOpen && (
+        <AddEditPostDialog 
+          isEdit={true}
+          post={post[0]}
+          handleClose={handleCloseUpdatePost}
+          handleSubmit={handleUpdatePost}
+          open={updatePostOpen}
+        />
+      )}
     </>
   );
   

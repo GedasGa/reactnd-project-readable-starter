@@ -46,6 +46,27 @@ export const getPostAPI = (postId) => {
     .then(data => data) ;
 }
 
+export const updatePostAPI = (postId, title, body) => {
+  const options = { 
+    method: 'put', 
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      title: title,
+      body: body,
+    })
+  }
+  return fetch(`${URL}/posts/${postId}`, options)
+    .then(response => response.json())
+    .then(data => data);
+}
+
+export const deletePostAPI = (postId) => {
+  const options = { method: 'delete', headers: getAuthHeaders() };
+  return fetch(`${URL}/posts/${postId}`, options)
+    .then(response => response.json())
+    .then(data => data);
+}
+
 export const upvotePostAPI = (postId) => {
   const options = {
     method: 'post',
@@ -72,27 +93,6 @@ export const downvotePostAPI = (postId) => {
     .catch(err => console.error(err));
 }
 
-export const updatePostAPI = (postId, title, body) => {
-  const options = { 
-    method: 'put', 
-    headers: getAuthHeaders(),
-    body: JSON.stringify({
-      title: title,
-      body: body,
-    })
-  }
-  return fetch(`${URL}/posts/${postId}`, options)
-    .then(response => response.json())
-    .then(data => data);
-}
-
-export const deletePostAPI = (postId) => {
-  const options = { method: 'delete', headers: getAuthHeaders() };
-  return fetch(`${URL}/posts/${postId}`, options)
-    .then(response => response.json())
-    .then(data => data);
-}
-
 export const getPostCommentsAPI = (postId) => {
   const options = { method: 'get', headers: getAuthHeaders() };
   return fetch(`${URL}/posts/${postId}/comments`, options)
@@ -115,6 +115,27 @@ export const addCommentAPI = (id, body, author, parentId) => {
   return fetch(`${URL}/comments`, options)
     .then(response => response.json())
     .catch(err => console.error(err));
+}
+
+export const updateCommentAPI = (commentId, body) => {
+  const options = { 
+    method: 'put', 
+    headers: getAuthHeaders(),
+    body: JSON.stringify({
+      timestamp: Date.now(),
+      body: body,
+    })
+  }
+  return fetch(`${URL}/comments/${commentId}`, options)
+    .then(response => response.json())
+    .then(data => data);
+}
+
+export const deleteCommentAPI = (commentId) => {
+  const options = { method: 'delete', headers: getAuthHeaders() };
+  return fetch(`${URL}/comments/${commentId}`, options)
+    .then(response => response.json())
+    .then(data => data);
 }
 
 export const upvoteCommentAPI = (postId) => {
@@ -141,25 +162,4 @@ export const downvoteCommentAPI = (commentId) => {
   return fetch(`${URL}/comments/${commentId}`, options)
     .then(response => response.json())
     .catch(err => console.error(err));
-}
-
-export const updateCommentAPI = (postId, body) => {
-  const options = { 
-    method: 'put', 
-    headers: getAuthHeaders(),
-    body: JSON.stringify({
-      timestamp: Date.now(),
-      body: body,
-    })
-  }
-  return fetch(`${URL}/comments/${postId}`, options)
-    .then(response => response.json())
-    .then(data => data);
-}
-
-export const deleteCommentAPI = (commentId) => {
-  const options = { method: 'delete', headers: getAuthHeaders() };
-  return fetch(`${URL}/comments/${commentId}`, options)
-    .then(response => response.json())
-    .then(data => data);
 }

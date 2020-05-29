@@ -35,6 +35,7 @@ function AddEditPostDialog(props) {
     } else {
       handleSubmit(uuidv4(), title, body, author, category);
     }
+    handleClose();
   }
   
   return (
@@ -59,6 +60,7 @@ function AddEditPostDialog(props) {
             id="author"
             label="Author"
             type="text"
+            disabled={isEdit}
             value={author}
             onChange={handleAuthorChange}
             fullWidth
@@ -75,16 +77,21 @@ function AddEditPostDialog(props) {
             id="standard-select-currency"
             select
             label="Category"
+            disabled={isEdit}
             value={category}
             onChange={handleCategoryChange}
             helperText="Please select a post category"
             fullWidth
           >
-            {categories && categories.map((category) => (
+            {categories && !isEdit ? categories.map((category) => (
               <MenuItem key={category.name} value={category.name}>
                 {category.name}
               </MenuItem>
-            ))}
+            )) :
+            <MenuItem key={category} value={category}>
+              {category}
+            </MenuItem>
+          }
           </TextField>
         </>
       }

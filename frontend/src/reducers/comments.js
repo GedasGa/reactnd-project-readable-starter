@@ -13,15 +13,16 @@ const comments = (state = [], {type, payload}) => {
         ];
       case COMMENT_UPDATED:
         return state.map(comment => 
-          comment.id === payload 
+          comment.id === payload.id 
             ? {
               ...comment,
-              body: comment.body
+              body: payload.body,
+              timestamp: payload.timestamp,
             }
             : comment
         );
       case COMMENT_DELETED:
-        return state.filter(comment => comment.id !== payload);
+        return state.filter(comment => comment.id !== payload.id);
     case COMMENT_UPVOTED:
       return state.map(comment =>
         comment.id === payload
