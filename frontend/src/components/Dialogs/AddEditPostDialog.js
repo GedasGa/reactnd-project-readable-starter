@@ -51,7 +51,7 @@ function AddEditPostDialog(props) {
             autoFocus
             id="title"
             label="Title"
-            type="email"
+            type="text"
             value={title}
             onChange={handleTitleChange}
             fullWidth
@@ -68,7 +68,7 @@ function AddEditPostDialog(props) {
           <TextField
             id="body"
             label="Body"
-            type="email"
+            type="text"
             value={body}
             onChange={handleBodyChange}
             fullWidth

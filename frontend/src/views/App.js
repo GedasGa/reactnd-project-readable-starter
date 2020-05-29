@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getPosts());
-  });
+  }, []);
 
   return (
     <React.Fragment>

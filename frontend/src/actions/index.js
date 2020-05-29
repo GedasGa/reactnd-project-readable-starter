@@ -147,8 +147,8 @@ export const addCommentFulfiled = (comment) => ({
     payload: comment
 });
 
-export const addComment = (commentId, body, author, parentId) => (dispatch) =>
-  addCommentAPI(commentId, body, author, parentId)
+export const addComment = (commentId, author, body, parentId) => (dispatch) =>
+  addCommentAPI(commentId, author, body, parentId)
   .then(response => dispatch(addCommentFulfiled(response)))
   .catch(err => console.error("Could not add comment:", err));
 

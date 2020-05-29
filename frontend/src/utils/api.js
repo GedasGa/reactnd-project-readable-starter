@@ -100,15 +100,15 @@ export const getPostCommentsAPI = (postId) => {
     .then(data => data);
 }
 
-export const addCommentAPI = (id, body, author, parentId) => {
+export const addCommentAPI = (id, author, body, parentId) => {
   const options = {
     method: 'post',
     headers: getAuthHeaders(),
     body: JSON.stringify({
       id: id,
       timestamp: Date.now(),
-      body: body,
       author: author,
+      body: body,
       parentId: parentId,
     })
   };
