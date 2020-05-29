@@ -9,6 +9,7 @@ import List from '@material-ui/core/List';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
 
+import Error from '../Error/Error';
 import Comment from '../../components/Comment';
 import Voting from '../../components/Voting';
 import EditDelete from '../../components/EditDelete';
@@ -88,6 +89,10 @@ function PostDetails(props) {
       dispatch(getPostComments(postId));
     }
   }, [postId, dispatch]);
+
+  if (!post.length) {
+    return (<Error />);
+  }
 
   return (
     <>
